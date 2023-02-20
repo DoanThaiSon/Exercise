@@ -1,0 +1,4 @@
+#Tue Dec 20 14:03:55 ICT 2022
+base.0=/Users/sondt42/Desktop/myapp/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
