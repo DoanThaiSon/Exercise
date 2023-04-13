@@ -1,6 +1,66 @@
 import 'package:flutter/material.dart';
-class BaiTap2 extends StatelessWidget {
+
+class BaiTap2 extends StatefulWidget {
+
   const BaiTap2({Key? key}) : super(key: key);
+
+  @override
+  State<BaiTap2> createState() => _BaiTap2State();
+}
+
+class _BaiTap2State extends State<BaiTap2> {
+  int _quantity = 0;
+  int _selectedMonth = -1;
+  final List<String> _months = [
+    "Tháng 1",
+    "Tháng 2",
+    "Tháng 3",
+    "Tháng 4",
+    "Tháng 5",
+    "Tháng 6",
+    "Tháng 7",
+    "Tháng 8",
+    "Tháng 9",
+    "Tháng 10",
+    "Tháng 11",
+    "Tháng 12"
+  ];
+
+  void _selectMonth(int index) {
+    setState(() {
+      _selectedMonth = index;
+    });
+  }
+
+  void _incrementQuantity() {
+    setState(() {
+      _quantity++;
+    });
+  }
+
+  void _decrementQuantity() {
+    setState(() {
+      if (_quantity > 0) {
+        _quantity--;
+      }
+    });
+  }
+
+  Widget _buildMonthButton(String month, int index) {
+    return GestureDetector(
+      onTap: () => _selectMonth(index),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.0),
+          border: Border.all(
+            color: _selectedMonth == index ? Colors.red : Colors.black,
+          ),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        child: Text(month),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -8,82 +68,53 @@ class BaiTap2 extends StatelessWidget {
       appBar: AppBar(
         title: Text("Bài tập về nhà số 2"),
       ),
-      body: Stack(
+      body:Column(
         children: [
-          Container(
-            child: Image.asset(
-              "assets/images/absen2.png",
-              fit: BoxFit.contain,
-            ),
+          SizedBox(height: 20.0),
+          Text(
+            'Chọn tháng:',
+            style: TextStyle(fontSize: 18.0),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 40,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade200,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("Intermedite"),
-                      ),
-                      alignment: Alignment.center,
-                    ),
-                    SizedBox(height: 30),
-                    Text(
-                      "Today's\nChallenge",
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "German meals",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.blue),
-                    ),
-                    SizedBox(height: 30),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.diamond,
-                          color: Colors.red,
-                          size: 30,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "Take this leasson to\nearn a new milestone",
-                          style: TextStyle(color: Colors.grey, fontSize: 15),
-                        )
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: _months
+                .asMap()
+                .entries
+                .map((entry) =>
+                _buildMonthButton(entry.value, entry.key))
+                .toList(),
           ),
-          // Positioned(
-          //     top: 0,
-          //     right: 0,
-          //     child: Image.asset(
-          //       "assets/images/people1.png",
-          //       width: 300,
-          //       height: 300,
-          //     ))
+          SizedBox(height: 20.0),
+          Text(
+            'Số lượng:',
+            style: TextStyle(fontSize: 18.0),
+          ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                icon: Icon(Icons.remove),
+                onPressed:
+                _selectedMonth == -1 ? null : () => _decrementQuantity(),
+              ),
+              Text(_quantity.toString()),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed:
+                _selectedMonth == -1 ? null : () => _incrementQuantity(),
+              ),
+            ],
+          ),
+          SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: _selectedMonth == -1 ? null : () {},
+            child: Text('Xác nhận'),
+          ),
         ],
       ),
     );
   }
 }
+
